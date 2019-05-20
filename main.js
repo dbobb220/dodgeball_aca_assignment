@@ -55,11 +55,29 @@ const arrOfPeople = [
   const redTeam = []
   
   class player {
-    constructor(){}
+    constructor(id, name, age, skillSet, placeBorn) {
+        id = this.id;
+        age = this.age;
+        skillSet = this.skillSet;
+        placeBorn = this.placeBorn;
+    }
   }
+
+  class dodgeBallPlayer extends player {
+    constructor(canThrowBall, canDodgeBall, hasPaid, isHealthy, yearsExperience, id, name, age, skillSet, placeBorn) {
+        super(id, name, age, skillSet, placeBorn);
+        this.canThrowBall = canThrowBall;
+        this.canDodgeBall = canDodgeBall;
+        this.hasPaid = hasPaid;
+        this.isHealthy = isHealthy;
+        this.yearsExperience = yearsExperience;
+    }
+  }
+  
   class blueTeammate {
     constructor(){}
   }
+
   class redTeammate {
     constructor(){}
   }
@@ -71,12 +89,24 @@ const arrOfPeople = [
       const button = document.createElement("button")
       button.innerHTML = "Make Player"
       button.addEventListener('click', function() {makePlayer(person.id)} )
+      button.setAttribute('id', `person${person.id}`)
       li.appendChild(button)
       li.appendChild(document.createTextNode(person.name + " - " + person.skillSet))
       listElement.append(li)
     })
   }
   
+  // move from people list to player list in DOM and arrays, include buttons in DOM
   const makePlayer = (id) => {
-    console.log(`li ${id} was clicked!`)
+    let personArray = arrOfPeople.filter(x => x.id == id);
+    let personDOM = document.querySelector(`#person${id}`).parentElement;
+    const li = document.createElement('li');
+    //!! change this logic from innerHTML to events like above
+    li.innerHTML = `<button class="red">Red Team</button><button class="blue">Blue Team</button>${personArray[0].name}</li>`;
+    personDOM.parentNode.removeChild(personDOM);
+    document.querySelector('#players').appendChild(li);
+    let arrIndex = arrOfPeople.findIndex(x => x.id === personArray[0].id);
+    let returnedItem = arrOfPeople.splice(arrIndex, 1);
+    listOfPlayers.push(returnedItem[0]);
+    console.log(listOfPlayers);
   }
