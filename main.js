@@ -1,3 +1,13 @@
+const assert = require('assert');
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+
+const dom = new JSDOM(``, {
+  url: 'http://127.0.0.1:5500/index.html',
+  contentType: "text/html",
+  includeNodeLocations: true
+});
+
 const arrOfPeople = [
   {
     id: 2,
@@ -54,15 +64,6 @@ const listOfPlayers = []
 const blueTeam = []
 const redTeam = []
 
-// class player {
-//   constructor(id, name, age, skillSet, placeBorn) {
-//       id = this.id;
-//       age = this.age;
-//       skillSet = this.skillSet;
-//       placeBorn = this.placeBorn;
-//   }
-// }
-
 class dodgeBallPlayer {
   constructor(id, name, canThrowBall, canDodgeBall, hasPaid, isHealthy, yearsExperience) {
     this.id = id;
@@ -108,18 +109,18 @@ const listPeopleChoices = () => {
 // move from people list to player list in DOM and arrays, include buttons in DOM
 const makePlayer = (id) => {
   let personArray = arrOfPeople.filter(x => x.id == id);
-  console.log(personArray);
   let personDOM = document.querySelector(`#person${id}`).parentElement;
   const li = document.createElement('li');
   const redButton = document.createElement('button');
   const blueButton = document.createElement('button');
   redButton.innerHTML = "Red Team";
   blueButton.innerHTML = "Blue Team";
-  redButton.addEventListener('click', function() {redTeam(id)});
-  blueButton.addEventListener('click', function() {blueTeam(id)});
-  redButton.setAttribute('id', `person${personArray[0].id}`);
-  blueButton.setAttribute('id', `person${personArray[0].id}`);
+  redButton.addEventListener('click', function() {redTeamButton(this.dataset.val)});
+  blueButton.addEventListener('click', function() {blueTeamButton(this.dataset.val)});
+  redButton.setAttribute('data-val', `${personArray[0].id}`);
+  blueButton.setAttribute('data-val', `${personArray[0].id}`);
   li.appendChild(blueButton);
+  li.appendChild(redButton);
   li.appendChild(document.createTextNode(personArray[0].name));
   document.querySelector('#players').appendChild(li);
   personDOM.parentNode.removeChild(personDOM);
@@ -127,12 +128,40 @@ const makePlayer = (id) => {
   let returnedItem = arrOfPeople.splice(arrIndex, 1);
   returnedItem = new dodgeBallPlayer(returnedItem[0].id, returnedItem[0].name, true, true, true, true, 5)
   listOfPlayers.push(returnedItem);
-  console.log(returnedItem);
-  console.log(personArray);
-  console.log(listOfPlayers);
 }
 
-// const blueTeam = (id) => {
-//   let teamMember = listOfPlayers.filter(x => x.id == id);
-//   let personDOM = document.querySelector()
-// }
+let blueTeamButton = (id) => {
+  let personArray = listOfPlayers.filter(x => x.id == id); 
+  let personDOM = document.querySelector(`[data-val='${id}']`).parentElement;
+  let bluePlayer = new blueTeammate(personArray[0].id, personArray[0].name, personArray[0].canThrowBall, personArray[0].canDodgeBall, personArray[0].hasPaid, personArray[0].isHealthy, personArray[0].yearsExperience, 'Blue', 'Steel');
+  let blueList = document.querySelector('#blue');
+  let li = document.createElement('li');
+  blueTeam.push(bluePlayer);
+  personDOM.parentNode.removeChild(personDOM);
+  li.appendChild(document.createTextNode(bluePlayer.name + ' - ' + bluePlayer.color + ' ' + bluePlayer.mascot));
+  blueList.appendChild(li);
+}
+
+let redTeamButton = (id) => {
+  let personArray = listOfPlayers.filter(x => x.id == id); 
+  let personDOM = document.querySelector(`[data-val='${id}']`).parentElement;
+  let redPlayer = new redTeammate(personArray[0].id, personArray[0].name, personArray[0].canThrowBall, personArray[0].canDodgeBall, personArray[0].hasPaid, personArray[0].isHealthy, personArray[0].yearsExperience, 'Red', 'Roosters');
+  let blueList = document.querySelector('#red');
+  let li = document.createElement('li');
+  redTeam.push(redPlayer);
+  personDOM.parentNode.removeChild(personDOM);
+  li.appendChild(document.createTextNode(redPlayer.name + ' - ' + redPlayer.color + ' ' + redPlayer.mascot));
+  blueList.appendChild(li);
+}
+
+// Tests
+if (typeof describe === 'function') {
+  describe('#makePlayer()', () => {
+    it('should add person to player array', () => {
+      makePlayer(4);
+      assert.equal(listOfPlayers.length, 1);
+    })
+  })
+} else {
+
+}

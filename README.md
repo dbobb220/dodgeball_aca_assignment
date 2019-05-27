@@ -21,3 +21,10 @@ Javascript:
 *Step 2:*
 - create logic that removes a player from the player list assigns a player to a team based on the button that is clicked in the DOM
 - create constructors and values for `color` and `mascot` that gets added to the player based on which team they go to
+- add individual to respective team array, and move them in the DOM
+
+*Step 3:*
+- create tests 
+    - test that person gets player attribute
+    - test that player on red team has correct color and mascot
+    - test that player on blue team has correct color and mascot
