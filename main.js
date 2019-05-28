@@ -157,9 +157,27 @@ let redTeamButton = (id) => {
 // Tests
 if (typeof describe === 'function') {
   describe('#makePlayer()', () => {
-    it('should add person to player array', () => {
-      makePlayer(4);
-      assert.equal(listOfPlayers.length, 1);
+    it('adds object values to player from person', () => {
+      let newPlayer = new dodgeBallPlayer('newPlayer.id', 'newPlayer.name', true, true, true, true, 4);
+            assert.equal(newPlayer.canThrowBall, true);
+            assert.equal(newPlayer.canDodgeBall, true);
+            assert.equal(newPlayer.hasPaid, true);
+            assert.equal(newPlayer.isHealthy, true);
+            assert.equal(newPlayer.yearsExperience, 4);
+    })
+  })
+
+  describe('#blueTeam()', () => {
+    it('should add mascot and color to blue player', () => {
+      let bluePlayer = new blueTeammate('bluePlayer.id', 'bluePlayer.name', true, true, true, true, 4, 'Blue', 'Steel');
+        assert.equal(bluePlayer.mascot, 'Steel');
+    })
+  })
+  
+  describe('#redTeam()', () => {
+    it('should add mascot and color to red player', () => {
+      let redPlayer = new redTeammate('redPlayer.id', 'redPlayer.name', true, true, true, true, 4, 'Red', 'Roosters');
+        assert.equal(redPlayer.mascot, 'Roosters')
     })
   })
 } else {
