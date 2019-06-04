@@ -8,6 +8,8 @@ const dom = new JSDOM(``, {
   includeNodeLocations: true
 });
 
+// starter code
+
 const arrOfPeople = [
   {
     id: 2,
