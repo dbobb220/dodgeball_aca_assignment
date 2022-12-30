@@ -18,6 +18,6 @@
   "homepage": "https://github.com/dbobb220/dodgeball_aca_assignment#readme",
   "dependencies": {
     "jsdom": "^15.1.0",
-    "mocha": "^6.1.4"
+    "mocha": "^10.2.0"
   }
 }
